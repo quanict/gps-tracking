@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="robots" content="INDEX,FOLLOW" />
+<title></title>
+<link href="http://rs1.viettracker.vn/satellite.ico" rel="shortcut icon">
+	<meta name="description"
+		content="Hành trình xe - VietTracker - Giám sát hành trình bằng thiết bị định vị toàn cầu GPS và bản đồ số" />
+	<meta name="keywords"
+		content="quản lý xe, quan ly xe, quan ly xe, quan ly xe, Hành trình xe, Hanh trinh xe, Hanh trinh xe, Hanh trinh xe, giám sát xe, giam sat xe, he thong giam sat xe truc tuyen, he thong giam sat xe truc tuyen, hệ thống giám sát xe trực tuyến, he thong giam sat xe truc tuyen, taxi cong nghe so, taxi cong nghe so, taxi congngheso, taxi congngheso, giam sat xe, giam sat xe, giam sat gps, giam sat gps" />
+	<script type="text/javascript">
+	var assets_url = "http://as1.viettracker.vn";
+	var site_url = "http://gps.viettracker.vn/";
+	var token = "bWFwZ3Bz";
+    </script>
+	<script type="text/javascript"
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+	<script type="text/javascript"
+		src="http://maps.google.com/maps/api/js?sensor=true&language=vi"></script>
+	<script type="text/javascript" src="http://as1.viettracker.vn/gps.js"></script>
+	<script type="text/javascript"
+		src="http://as1.viettracker.vn/js/2.1/i18n.js"></script>
+	<script type="text/javascript"
+		src="http://as1.viettracker.vn/js/2.1/mapgps.js"></script>
+	<script type="text/javascript"
+		src="http://as1.viettracker.vn/js/2.1/gps.js"></script>
+	<script type="text/javascript"
+		src="http://as1.viettracker.vn/js/2.1/playback.js"></script>
+	<script type="text/javascript"
+		src="http://as1.viettracker.vn/js/2.1/report.js"></script>
+	<script type="text/javascript"
+		src="http://as1.viettracker.vn/js/2.1/tracking.js"></script>
+	<style type="text/css" title="importStyle">
+@import url("http://as1.viettracker.vn/gps.2.0.css");
+</style>
+	<script type="text/javascript">
+	jQuery(document).ready(function() {
+	    vmap.zoom = 15;
+	    tracking.center = true;
+	    vmap.markerInfo = new google.maps.InfoWindow();
+	    vmap.refresh = 10;
+	    vmap.timestamp = 1479757814000;
+	    vmap.token = {
+		'name' : '616493c4bf1ea9348e6cdded4e88549a',
+		'val' : 'd0ed510ca278979bc45b06b3b4e0a25c'
+	    };
+	    ;
+	    vmap.ini();
+	    tracking.ini();
+	    vmap.autoLoad("tracking.track");
+	    ;
+	    $("#gps-vehicles").dropdownchecklist({
+		firstItemChecksAll : true,
+		icon : {},
+		width : 250
+	    });
+	    ;
+	});
+    </script>
+	<!--[if lt IE 9]>
+  <script type="text/javascript" src="http://as1.viettracker.vn/libraries/pie/PIE_IE678.js"></script>
+<![endif]-->
+	<!--[if IE 9]>
+  <script type="text/javascript" src="http://as1.viettracker.vn/libraries/pie/PIE_IE9.js"></script>
+<![endif]-->
+</head>
+<body>
+	<div class="header wrappage">
+		<a href="http://viettracker.vn" class="logo" target="_blank"> </a>
+		<div class="menu">
+			<ul>
+				<li><a href="http://gps.viettracker.vn/ban-do.html">Bản
+						Đồ</a></li>
+				<li class="selected"><a
+					href="http://gps.viettracker.vn/theo-doi.html">Vị Trí</a></li>
+				<li><a href="http://gps.viettracker.vn/lich-su.html">Lịch
+						Sử</a></li>
+				<li><a href="http://gps.viettracker.vn/thong-ke.html">Báo
+						Cáo</a></li>
+				<li><a href="http://gps.viettracker.vn/quan-ly/thiet-bi.html">Quản
+						Trị</a></li>
+			</ul>
+		</div>
+		<div class="account">
+			<ul>
+				<li><span>Xin Chào: </span><a
+					href="http://gps.viettracker.vn/tai-khoan.html">Nguyễn Hồng
+						Quân</a></li>
+				<li><a
+					href="http://viettracker.vn/giai-dap/huong-dan-tracking-xe-may.html"
+					target="_blank">Hướng Dẫn Sử Dụng </a></li>
+				<li><a href="http://gps.viettracker.vn/dang-xuat.html">Đăng
+						Xuất</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="wrappage">
+		<div class='clearfix wrappage container'>
+			<div class="gps-tool clearfix">
+				<div id="vehicle-info"></div>
+				<div class="vehicles crfloat ">
+					<span style="display: inline-block; padding: 0 5px;">Chọn
+						Phương Tiện</span><select id="gps-vehicles" multiple="multiple"><option
+							value="*">(Tất Cả Thiết Bị)</option>
+						<option value="Akcld" selected="selected">GPS home</option>
+						<option value="Bkcld" selected="selected">SH 5959</option>
+						<option value="Ckcld" selected="selected">Sơn</option>
+						<option value="Dkcld" selected="selected">Tú</option></select>
+				</div>
+			</div>
+			<div class="gmap-area clearfix">
+				<div id="gmap" style=""></div>
+				<div id="gmap-status"></div>
+				<div id="gmap-address" lo="" la=""></div>
+			</div>
+		</div>
+	</div>
+	<div class="ajax-modal"></div>
+</body>
+</html>
