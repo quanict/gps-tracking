@@ -156,14 +156,6 @@ class Account extends MX_Controller {
 		->set_layout('login')
 		->build('pages/login',array());
 
-// 		$this->template->set_template('login');
-// 		$this->template->add_css('gps-login.css');
-// 		$this->title = lang('Login');
-// // 		$this->template->write_view('leftcontent', 'modules/gps-solution');
-// 		$form['fields'] = array( 'username'=>array('lable'=>lang('username lable') ),'password'=>array('type'=>'password','lable'=>lang('password lable') ) );
-// 		$this->template->write_view('content', 'account/login-form2',$form);
-
-// 		$this->template->render();
 	}
 
 	protected function checkLogin(){
@@ -205,6 +197,7 @@ class Account extends MX_Controller {
 	public function logout(){
 		$this->session->unset_userdata('traking');
 		$this->session->unset_userdata($this->userSession);
+		$this->session->unset_userdata('uid');
 		redirect('dang-nhap', 'refresh');
 	}
 
