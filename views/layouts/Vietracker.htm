@@ -53,13 +53,14 @@
 		<div class="account">
 			<ul>
 				<li>
-					<?php echo '<span>'.lang('Wellcome').': </span>'.anchor('tai-khoan',$this->acountLogined->fullname) ;?>
+					<?php echo anchor('dang-xuat',$this->lang->line('Logout'))?>
 				</li>
+
 				<li>
 					<?php echo anchor('http://viettracker.vn/giai-dap/huong-dan-tracking-xe-may.html',$this->lang->line('User Guide'),' target="_blank" ')?>
 				</li>
 				<li>
-					<?php echo anchor('dang-xuat',$this->lang->line('Logout'))?>
+					<?php echo '<span>'.lang('Wellcome').': </span>'.anchor('tai-khoan',$this->acountLogined->fullname) ;?>
 				</li>
 			</ul>
 		</div>
