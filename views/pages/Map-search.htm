@@ -1,0 +1,24 @@
+<div class="gps-tool clearfix"></div>
+
+<div class="gmap-area clearfix">
+	<div id="gmap" style=""></div>
+	<div id="gmap-status"></div>
+	'
+	<div id="gmap-address-search">
+		<div class="results"></div>
+		<div class="form">
+			<form action="post" id="search-address">
+				<input type="text" name="address" value="">
+				<button type="submit" id="gbqfb" name="search">
+					<span class="gbqfi"></span>{lang txt='Search'}
+				</button>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$( document ).ready(function() {
+	vmap.ini();
+	vmap.geocoding_search();
+});
+</script>

@@ -16,23 +16,21 @@
 
 				<form autocomplete="off" method="post" action="" role="form" >
 					<div class="form-group">
-						<a href="#" class="pull-right label-forgot">Forgot email?</a> <label
-							for="inputUsernameEmail">Username or email</label>
+						<label
+							for="inputUsernameEmail">{lang txt='Username or email'}</label>
 							<input
 							type="text" id="inputUsernameEmail" class="form-control" name="username" >
 					</div>
 					<div class="form-group">
-						<a href="#" class="pull-right label-forgot">Forgot password?</a> <label
-							for="inputPassword">Password</label>
+						<label
+							for="inputPassword">{lang txt='Password'}</label>
 							<input type="password" id="inputPassword" class="form-control" name="password" >
 					</div>
 					<div class="checkbox pull-left">
-						<label> <input type="checkbox">Remember me
-						</label>
+						<label> <input type="checkbox">{lang txt='Remember me'}</label>
 					</div>
 					{inputToken}
-					<button class="btn btn btn-primary pull-right" type="submit">
-						Log In</button>
+					<button class="btn btn btn-primary pull-right" type="submit">{lang txt="Log In"}</button>
 				</form>
 				{* <a class="forgotLnk" href="index.html"></a>
 				<div class="or-box">

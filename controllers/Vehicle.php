@@ -22,25 +22,8 @@ class Vehicle extends MX_Controller {
 	}
 
 	public function geocoding(){
-		$headScript =''
-			.'vmap.ini();'
-			.'vmap.geocoding_search();'
-		;
-		$this->template->add_js_ready($headScript);
-		$html='<div class="gps-tool clearfix" ></div>'
-			.'<div class="gmap-area clearfix" >'
-				.'<div id="gmap" style="" ></div>'
-				.'<div id="gmap-status"></div>'
-				.'<div id="gmap-address-search">'
-					.'<div class="results"></div>'
-					.'<div class="form" >'
-						.'<form action="post" id="search-address">'
-						.'<input type="text"  name="address" value="" >'
-						.'<button type="submit" id="gbqfb"  name="search" ><span class="gbqfi"></span></button>'
-						.'</form>'
-			.'</div></div></div>';
-		$this->template->write('content',$html);
-		$this->template->render();
+		$this->template
+		->build('pages/map-search',array());
 
 	}
 
@@ -141,8 +124,7 @@ class Vehicle extends MX_Controller {
 			} else if($begin) {
 				$nodes = $this->Vehicle_Model->loadNodeByTime( $this->vid ,$begin );
 			}
-// 			bug($nodes);exit;
-// 			exit('bug data history');
+
 			if(isset($nodes) && $nodes){
 				$end = ($end)?$end:null;
 				$stop = $this->Vehicle_Model->getStopNodeByTime($this->vid,$begin,$end,FALSE);
@@ -196,10 +178,13 @@ class Vehicle extends MX_Controller {
 			//.'$(".node-guide").css({"margin-top":0});'
 			.'playback.create();'
 			;
-			$this->template->add_js_ready($headScript);
-			$this->template->write('content', self::status('history',false));
-			$this->template->write('content', '<div class="gmap-area clearfix" ><div id="gmap" style="" ></div></div>');
-			$this->template->render();
+// 			$this->template->add_js_ready($headScript);
+// 			$this->template->write('content', self::status('history',false));
+// 			$this->template->write('content', '<div class="gmap-area clearfix" ><div id="gmap" style="" ></div></div>');
+// 			$this->template->render();
+
+			$this->template
+			->build('pages/history',array('js_ready'=>"$headScript"));
 		}
 
 	}
@@ -232,12 +217,7 @@ class Vehicle extends MX_Controller {
 			$script .="tracking.polyline[".$it->id."] =  new google.maps.Polyline({ strokeColor: '#".$this->color[$k]."'}); $('#vehicle-info').css({'height':22,'padding-top':5});";
 		}
 		$this->template
-
 		->build('pages/trackall',array('js_ready'=>"vmap.ini(); $script tracking.ini(); vmap.autoLoad('tracking.track');"));
-// 		$this->template->add_js_ready(' vmap.ini(); '.$script.' tracking.ini(); vmap.autoLoad("tracking.track"); ');
-// 		$this->template->write('content', self::status('tracking',true));
-// 		$this->template->write('content', '<div class="gmap-area clearfix" ><div id="gmap" style="" ></div><div id="gmap-status"></div><div id="gmap-address" lo="" la="" ></div></div>');
-// 		$this->template->render();
 
 	}
 
