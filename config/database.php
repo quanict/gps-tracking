@@ -36,7 +36,7 @@ $db['nodedemo'] = array(
     'username'=>'root',
     'password'=>'',
     'dbdriver'=>'mysqli',
-    'dbprefix'=>'',
+    'dbprefix'=>'demo_',
     'cache_on'=>true
 );
 

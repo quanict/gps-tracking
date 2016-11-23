@@ -8,8 +8,8 @@ $route+=array(
 	'tai-khoan'=>'account',
 	'tai-khoan/sua-thong-tin'=>'account/changeInfo',
 	'tai-khoan/doi-mat-khau'=>'account/changePassword',
-		
-	'quan-ly'=>'account/manager',
+
+	'thiet-bi'=>'account/manager',
 	'quan-ly/(:any)'=>'account/manager',
 );
 // $route['dang-nhap'] = 'account/login';
@@ -33,16 +33,19 @@ $route+=array(
 $route+=array(
 	'ban-do'=>'vehicle/geocoding',
 	'toa-do/(:any)'=>'vehicle/nodeRow',
-		
+
 	'theo-doi'=>'vehicle/trackall',
 	'theo-doi/(:any)'=>'vehicle/trackone',
-		
+
 	'lich-su'=>'vehicle/history',
 	'lich-su/(:any)'=>'vehicle/history',
-	
-	'thong-ke'=>'vehicle/report',
-	'thong-ke/(:any)'=>'vehicle/report',
-		
-	
+
+	'thong-ke'=>'Report',
+	'thong-ke/(:any)'=>'Report',
+    'thong-ke/(:any)/(:any)'=>'Report/report_data_json/$2',
+
+
+
+
 );
 // $route['ban-do'] = 'track/geocoding';

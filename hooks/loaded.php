@@ -2,10 +2,10 @@
 function loagMotor(){
 	$CI =& get_instance();
 
-	$CI->head_script.='var assets_url = "'.subdomain('assets_url').'";'
-					.'var site_url = "'.site_url().'";'
-					.'var token ="'.$CI->form->protection().'";'
-					;
+// 	$CI->head_script.='var assets_url = "'.subdomain('assets_url').'";'
+// 					.'var site_url = "'.site_url().'";'
+// 					.'var token ="'.$CI->form->protection().'";'
+// 					;
 
 // 	exit('call me');
 // 	$config = $CI->System_Model->getConfig();
@@ -25,11 +25,12 @@ function loagMotor(){
 			.'vmap.markerInfo = new google.maps.InfoWindow();'
 			.'vmap.refresh = '.$CI->config->item('refresh-time').';'
 			.'vmap.timestamp = '.(strtotime('now')*1000).';'
-			."vmap.token = {'name':'".config('csrf_token_name')."','val':'".$CI->security->get_csrf_hash()."'};"
+			."vmap.token = {'name':'".config_item('csrf_token_name')."','val':'".$CI->security->get_csrf_hash()."'};"
 
 	;
-	$CI->template->add_js_ready($script);
-	die('call me');
+	add_js_header($script);
+// 	$CI->template->add_js_ready($script);
+// 	die('call me');
 	$expired = $CI->Vehicle_Model->getExpiredRow();
 
 	if ( isset($CI->acountLogined) && !$CI->acountLogined->phone ){
@@ -43,30 +44,37 @@ function loagMotor(){
 		$CI->template->add_js_ready("$('#mini-notification').miniNotification({closeButton: true, closeButtonText: '[Ä�Ã³ng]',time: 50000});");
 	}
 
-// 	bug($scriptFirst);
-
-
 }
 
-function fileTypeOut(){
-	$CI =& get_instance();
-// 	echo str_replace('?'.$_SERVER['QUERY_STRING'],null,$_SERVER['REQUEST_URI']) ;
-	$fileType =  pathinfo( str_replace('?'.$_SERVER['QUERY_STRING'],null,$_SERVER['REQUEST_URI']),PATHINFO_EXTENSION );
-	switch ($fileType){
-		case 'json':
-			$CI->url_suffix = 'json';
-			if($CI->agent->browser() != 'Internet Explorer'){
-				header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-				header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-				header('Content-type: text/json');
-				header('Content-type: application/json');
-				header('Content-Disposition: attachment; filename="downloaded.json"');
-			}
-			header('Content-Transfer-Encoding: binary');
-			break;
-		case 'kml':
-		case 'xls': $CI->url_suffix = $fileType; break;
-		default: $CI->url_suffix = 'html'; break;
-	}
+function load_smartys(){
+    $ci = get_instance();
+    if( isset($ci->smarty) ){
+        $smarty = $ci->smarty;
+        $userinfo = $ci->Account_Model->userInfo($ci->session->userdata('uid'));
+        if( is_object($userinfo) && isset($userinfo->username) ){
+            $smarty->assign('username', $userinfo->username);
+        }
 
+
+        get_instance()->load->library('smarty_func');
+        $lib_name = 'Smarty_func';
+        foreach (get_class_methods($lib_name) AS $plugin){
+	        if( $plugin !='__construct' && !isset($smarty->registered_plugins['function'][$plugin]) ){
+	            $smarty->registerPlugin('function', $plugin, "$lib_name::".$plugin);
+	        }
+
+	    }
+
+
+	    $script = ''
+	        .'vmap.zoom = '.$ci->config->item('gps_zoom').';'
+	            .'tracking.center = true;'
+	                .'vmap.markerInfo = new google.maps.InfoWindow();'
+	                    .'vmap.refresh = '.$ci->config->item('refresh-time').';'
+	                        .'vmap.timestamp = '.(strtotime('now')*1000).';'
+	                            ."vmap.token = {'name':'".config_item('csrf_token_name')."','val':'".$ci->security->get_csrf_hash()."'};"
+
+	                                ;
+	                                add_js_header($script);
+    }
 }

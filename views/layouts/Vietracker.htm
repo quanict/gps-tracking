@@ -8,25 +8,19 @@
 <link rel="shortcut icon" href="/satellite.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script type="text/javascript">
 
-	var assets_url = "http://as1.viettracker.vn";
-	var site_url = "{site_url}";
-	var token = "bWFwZ3Bz";
+
     </script>
 	{assets type='css'}
 	{assets type='js'}
 	<script type="text/javascript">
-		vmap.zoom = {config item='gps_zoom'};
-		vmap.refresh = '{config item="refresh-time"}';
-		vmap.timestamp = '{strtotime("now")*1000}';
-		{*
-		vmap.token = {'name':'{config item="csrf_token_name"}','val':'{php}get_instance->security->get_csrf_hash(){/php}'};
-		*}
+
+	{if isset($js_header)}{$js_header}{/if}
 		tracking.center = true;
 		vmap.markerInfo = new google.maps.InfoWindow();
 		$(function() {
 		    $("#gps-vehicles").dropdownchecklist({ firstItemChecksAll: true, icon: {}, width: 250});
+		    {if $js_ready}{$js_ready}{/if}
 		});
 
 	</script>
@@ -61,7 +55,12 @@
 
 	<div class="wrappage">
 		<div class='clearfix wrappage container'>
+
+			{if !isset($show_tool) OR $show_tool==1 }
 			<div class="gps-tool clearfix">
+				{if isset($header_ctr)}
+				{include file='../'|cat:$header_ctr|cat:'.htm'}
+				{else}
 				<div id="vehicle-info"></div>
 				<div class="vehicles crfloat ">
 					<span style="display: inline-block; padding: 0 5px;">Chọn Phương Tiện</span>
@@ -75,7 +74,10 @@
 
 
 				</div>
+				{/if}
+
 			</div>
+			{/if}
 			{$_body}
 
 		</div>

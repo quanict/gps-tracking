@@ -217,7 +217,7 @@ class Vehicle_Model extends CI_Model {
 
 		$query = $this->$table->get();//->row();
         if( !is_object($query) ){
-            bug($this->$table->last_query());die;
+//             bug($this->$table->last_query());
         } else {
             $data = $query->row();
         }
@@ -561,6 +561,8 @@ class Vehicle_Model extends CI_Model {
 		$table = self::checkDatabaseGPS($vid);
 		$vid = abs($vid);
 		$this->vehicle = self::getInfo($vid);
+
+
 		if($table === false){
 			return null;
 		}
@@ -569,24 +571,31 @@ class Vehicle_Model extends CI_Model {
 				$this->vehicle->fuel_type = 'ron-95';
 			}
 			$this->$table->select('*')->from("data".intval(abs($vid)-config('carSpace')));
+
 		} else {
 			$this->vehicle->fuel_type = 'ron-92';
-			$this->$table->select('*')->from("data$vid");
+			$this->$table->select('*')->from("motor$vid");
 		}
 
-		$this->$table->where( array('Lon <'=>180,'Lon >'=>-180,'La <'=>90,'La >'=> -90));
+		$this->$table->where( array('longitude <'=>180,'longitude >'=>-180,'latitude <'=>90,'latitude >'=> -90));
 		if( (int)$day > 0 && (int)$month >0 && (int)$year > 0 ){
 			$this->$table->where('DAY(TIMESERVER)',(int)$day);
 			$this->$table->where('MONTH(TIMESERVER)',(int)$month);
 			$this->$table->where('YEAR(TIMESERVER)',(int)$year);
-			$this->$table->order_by('POINTS DESC ');
+			$this->$table->order_by('id DESC ');
 			$return = self::report_nodes($this->$table->get()->result(),'day', ($table=='car')?TRUE:FALSE );
 		} else if ( (int)$month >0 && (int)$year > 0 ){
 			$this->$table->where('MONTH(TIMESERVER)',(int)$month);
 			$this->$table->where('YEAR(TIMESERVER)',(int)$year);
-			$this->$table->order_by('POINTS DESC ');
-			$data = $this->$table->get()->result();
-			$return = self::report_nodes($data,'month',($table=='car')?TRUE:FALSE,$day,$month,$year);
+			$this->$table->order_by('id DESC ');
+			$query = $this->$table->get();
+			if( is_object($query) ){
+			    $return = self::report_nodes($query->result(),'month',($table=='car')?TRUE:FALSE,$day,$month,$year);
+			} else {
+
+			}
+
+
 		} else if ((int)$year > 0){ // never using
 			$this->$table->where('YEAR(TIMESERVER)',(int)$year);
 			$this->$table->order_by('POINTS DESC ');
@@ -594,6 +603,8 @@ class Vehicle_Model extends CI_Model {
 			$return = self::report_nodes($data,'year',($table=='car')?TRUE:FALSE,null,null,$year);
 			$return['type'] = 'year';
 
+		} else {
+		    $return = NULL;
 		}
 		return $return;
 	}
@@ -604,7 +615,7 @@ class Vehicle_Model extends CI_Model {
 			'node'=>null,
 			'type'=>$type,
 			'length_road'=>0,
-			'max_speed' => array('max'=>0,'time'=>null),
+			'max_speed' => array('max'=>0,'time'=>''),
 			'fuel'=>array(),
 			'fuel_price'=>0,
 			'fuel_price_vnd'=>'',
@@ -734,7 +745,7 @@ class Vehicle_Model extends CI_Model {
 
 		$hMove = floor($movingSecons/3600);
 		$mMove = round( ($movingSecons - $hMove*3600)/60 );
-		$out['moving_time'] = (($hMove>0)?($hMove).' Giá»� :':'').($mMove.' PhÃºt') ;
+		$out['moving_time'] = (($hMove>0)?($hMove).lang('seconds'):'').($mMove.' '.lang('minutes')) ;
 
 		foreach ($out['fuel'] AS $index=>$fuelVal){
 			$out['fuel'][$index] = abs($out['fuel'][$index]);

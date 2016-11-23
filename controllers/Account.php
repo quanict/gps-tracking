@@ -4,7 +4,7 @@ class Account extends MX_Controller {
 		parent::__construct();
 
 		$this->load->module('layouts');
-// 		$this->load->library('layouts/template');
+//
 		$this->template->set_theme('apricot')
 		->set_layout('bootstrap');
 
@@ -206,7 +206,7 @@ class Account extends MX_Controller {
 	 * manager vehicle
 	*/
 	public function manager(){
-		$this->template->write('content', self::menu());
+// 		$this->template->write('content', self::menu());
 
 		$subPage = $this->uri->segment(2);
 		if($this->input->post()) {
@@ -226,11 +226,15 @@ class Account extends MX_Controller {
 // 			self::shutdownVehicle();
 // 		}
 		else {
-			$data['rows'] = $this->Vehicle_Model->getTracks($this->session->userdata('uid'));
-			$this->template->write_view('content', 'account/vehicles',$data);
-			$this->template->add_js_ready('manager.tableAction();');
+			$data['vehicles'] = $this->Vehicle_Model->getTracks($this->session->userdata('uid'));
+// 			$this->template->write_view('content', 'account/vehicles',$data);
+// 			$this->template->add_js_ready('manager.tableAction();');
 		}
-		$this->template->render();
+// 		$this->template->render();
+		$this->smarty->assign('show_tool', false);
+		$this->template->set_theme('viettracker')
+		->set_layout('vietracker')
+		->build('pages/vehicles',$data);;
 	}
 
 	protected function updateMotor(){
@@ -341,21 +345,7 @@ class Account extends MX_Controller {
 	 * END manager Vehicle
 	*/
 
-	protected function menu(){
-		$out = '<div class="block-left"><div class="content-box">'
-			.'<div class="box-body">'
-				.'<div class="box-header clear">'
-				.'<h2 class="fl" >'.lang('Account Management').'</h2>'
-				.'</div>'
-			.'</div>'
-			.'<div class="box-wrap clear" ><ul>'
-				.'<li>'.anchor('quan-ly/thiet-bi', lang('Device Management') ).'</li>'
-				.'<li>'.anchor('tai-khoan/doi-mat-khau',lang('Change Password') ).'</li>'
-				.'<li>'.anchor('tai-khoan',lang('Account Info') ).'</li>'
-			.'</ul></div>'
-			.'</div></div>';
-		return $out;
-	}
+
 
 
 }

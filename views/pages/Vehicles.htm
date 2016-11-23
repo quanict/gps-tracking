@@ -1,0 +1,64 @@
+{include file='../blocks/menu_left.htm'}
+<div class="content-box block-right">
+	<div class="box-body">
+		<div class="box-header clear"><h2 class="fl" >{lang txt='Device List'}</h2></div>
+	</div>
+	<div class="box-wrap clear">
+	<div class="talbe-view dataTables_wrapper">
+		<table  class="style1" id="node-data">
+			<thead><tr>
+				<th style="width: 150px;">{lang txt='Device Name'}</th>
+				<th style="width: 100px;">{lang txt='Plate Number'}</th>
+				<th style="width: 50px;">{lang txt='IMEI Number'}</th>
+				<th style="width: 50px;" class="center">{lang txt='Created'}</th>
+				<th style="width: 50px;" class="center">{lang txt='Expiry'}</th>
+				<th style="width: 50px;" class="center">{lang txt='Status'}</th>
+				<th style="width: 80px;" class="center">{lang txt='Actions'}</th>
+
+				<th style="width: 50px;" class="center">{lang txt='Shutdown Device'}</th>
+
+			</tr></thead>
+			<tbody>{if $vehicles|count > 0}{foreach $vehicles AS $k=>$it}
+			<tr class="{if $k%2==1}old{else}even{/if}">
+				<td>{if $it->name !=''}{$it->name}{else}viettracker-{base64_encode($it->id)}{/if}</td>
+				<td>{$it->plate_number}</td>
+				<td class="nowrap-50" >{if $it->imei !=''}{$it->imei}{else}{md5($it->id)}{/if}</td>
+				<td class="center">{dateformat date=$it->created}</td>
+				<td class="center">{dateformat date=$it->expiry}</td>
+				<td class="center"><button class="icon_only item-publish" ></button></td>
+				<td class="center" >
+
+					{if $it->permission == 'owner'}
+					<input type="button" class="icon_only item-edit" title="{lang txt='Edit Data'}" >
+					{/if}
+					<input type="button" class="icon_only item-tracking" title="Tracking" >
+					<input type="button" class="icon_only item-report" title="{lang txt='View Report'}" >
+					<input type="button" class="icon_only item-history" title="{lang txt='View History'}" >
+					<input type="hidden" name="imei" value="{mortorID id=$it->id}" >
+
+				</td>
+
+				<td class="center" >
+
+					{if $it->permission == 'owner'}
+						{if $it->shutdown == 0}
+						<input type="button" class="icon_only item-shutdown" title="{lang txt='Shutdown Device'}" >
+						{else}
+						<input type="button" class="icon_only item-turnon" title="{lang txt='Turn On Device'}" >
+						{/if}
+						<input type="hidden" name="<imei" value="{mortorID id=$it->id}" >
+					{/if}
+
+				</td>
+			</tr>
+			{/foreach}{/if}
+			</tbody>
+			<tfoot></tfoot>
+		</table>
+		<form action="{site_url uri='quan-ly/sua-thiet-bi'}" method="post" name="update-vehicle" >
+			<input type="hidden" name="imei" value="" >
+			{input_token}
+		</form>
+	</div>
+	</div>
+</div>

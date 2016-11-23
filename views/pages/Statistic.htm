@@ -1,0 +1,60 @@
+
+<div class="gps-left">
+	<div class="obi  clfloat" style="padding: 0 5px;" >
+		<h3>{lang txt="Report Data"}</h3>
+		{input_hidden name='vid' value=$vstr}
+		<div class="obi-l" >
+			<label>{lang txt='View data in day'}</label>
+			<select id="obi-day" name="rday">
+				<option value="0" >{lang txt='Day'}</option>
+				{for $foo=1 to 3}<option value="{$foo}" >{$foo}</option>{/for}
+
+			</select>
+		</div>
+		{if isset($repo) AND !empty($repo)}
+			{if isset($repo->name) }
+				<div class="obi-l" ><label>{lang txt='Device'}</label>{$repo->name}</div>
+			{/if}
+			{if isset($repo->plate_number) }
+				<div class="obi-l" ><label>{lang txt='Plate Number'}</label>{$repo->plate_number}</div>
+			{/if}
+
+			<div class="obi-l" ><label>{lang txt='Quang duong da di'}</label><span name="length_road"></span></div>
+			<div class="obi-l" ><label>{lang txt='Thoi gian di chuyen'}</label><span name="moving_time"></span></div>
+			<div class="obi-group speed anchor" >
+				<div class="obi-l" ><label>{lang txt='Van Toc Cuc dai'}</label><span name="max_speed"></span> KM/h</div>
+				<div class="obi-l" ><label>{lang txt='vao luc'}</label><span name="time_max"></span></div>
+			</div>
+			<div class="obi-group fuel" >
+				<div class="obi-l" ><label>{lang txt='Nhien lieu tieu thu'}</label><span name="fuel"></span></div>
+				<div class="obi-l" ><label>{lang txt='Chi phi nhien lieu'}</label><span name="fuel_price"></span></div>
+				<div class="obi-l" ><span name="fuel_price_vnd" class="money-vnd" ></span></div>
+			</div>
+		{/if}
+
+	</div>
+</div>
+<div class="gps-right">
+	{if isset($repo->type) && $repo->type== 2 && isset($repo->fuel_current) && $repo->fuel_current==1 }
+	<input type="button" value="{lang txt='Du lieu duong di'}" title="{lang txt='Du lieu duong di'}" name="waydata" class="gps-button" disabled="disabled" >
+	<input type="button" value="{lang txt='Du lieu nhien lieu'}" title="{lang txt='Du lieu nhien lieu'}" name="fueldata" class="gps-button"  >
+	{/if}
+	<div id="chart" style="height: 250px; width:850px;" ></div>
+</div>
+<div class="report clearfix" style="padding: 0 10px;">
+<div class="talbe-view dataTables_wrapper">
+	<h3 class="table-title" ></h3>
+	<p class="export crfloat" ></p>
+	<table  class="style1" id="node-data-stop" >
+		<thead><tr>
+			<th width="70"></th>
+			<th width="50"></th>
+			<th width="50"></th>
+			<th width="50"></th>
+			<th width="50"></th>
+			<th width="200"></th>
+		</tr></thead>
+		<tbody></tbody><tfoot></tfoot>
+	</table>
+</div></div>
+

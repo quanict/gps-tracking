@@ -1,0 +1,59 @@
+<h2>Đếm Số</h2>
+
+<form action="" method="post">
+
+	<ul id="items" style="list-style: decimal; font-size: 30px;">
+	<li class="form-group" ><input type="text" class="form-control number" name="number[]"></li>
+	</ul>
+	{input_token}
+	<button type="submit" class="btn btn-default">Đếm</button>
+</form>
+{if $numbers|count > 0}
+<fieldset class="form-inline" style="margin-top: 10px;"><legend>Kết Quả Đếm</legend>
+{foreach $numbers AS $num=>$count}
+<div class="form-group">
+  <label >{$num} : </label><span> {$count}</span>
+
+</div>
+{/foreach}
+</fieldset>
+{/if}
+
+<script type="text/javascript">
+(function($) {
+    $.fn.onEnter = function(func) {
+        this.bind('keypress', function(e) {
+            if (e.keyCode == 13){
+	        	func.apply(this, [e]);
+	        	e.preventDefault();
+            }
+        });
+        return this;
+     };
+})(jQuery);
+
+function check_addnew(inputtext){
+    var $li = inputtext.parents('li');
+	if ( $li.siblings().length < 1 || $li.index() == $li.siblings().length ) {
+	    var newInput = $li.clone();
+		newInput.find('input[type=text]').val('');
+		newInput.appendTo('ul#items');
+		newInput.find('input[type=text]').focus();
+		$("input.number").onEnter( function() {
+			check_addnew($(this));
+			return false;
+		});
+	} else {
+	    $li.next('li').find('input[type=text]').focus();
+	}
+
+}
+
+$(function() {
+    $("input.number").onEnter( function() {
+		check_addnew($(this));
+		return false;
+	});
+
+});
+</script>
