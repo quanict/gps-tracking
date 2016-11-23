@@ -1,5 +1,11 @@
 <h2>Đếm Số</h2>
-
+{if $numbers|count > 0}
+	<fieldset class="form-inline" style="margin-top: 10px;"><legend>Kết Quả Đếm</legend>
+	{foreach $numbers AS $num=>$count}
+	<p><label >{$num} : </label><span> {$count}</span></p>
+	{/foreach}
+	</fieldset>
+{/if}
 <form action="" method="post">
 
 	<ul id="items" style="list-style: decimal;">
@@ -14,16 +20,7 @@
 	{input_token}
 	<button type="submit" class="btn btn-default">Đếm</button>
 </form>
-	{if $numbers|count > 0}
-	<fieldset class="form-inline" style="margin-top: 10px;"><legend>Kết Quả Đếm</legend>
-	{foreach $numbers AS $num=>$count}
-<div>
-  <label >{$num} : </label><span> {$count}</span>
 
-</div>
-{/foreach}
-</fieldset>
-{/if}
 
 <script type="text/javascript">
 (function($) {
