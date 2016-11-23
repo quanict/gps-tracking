@@ -17,7 +17,8 @@ class Number extends MX_Controller {
 	        $number_str = $this->input->post('number');
 
 	        if( !empty($number_str) AND count($number_str) > 0 ) foreach ($number_str AS $num_str){
-                $number_check = explode('.', $num_str);
+//                 $number_check = explode('.', $num_str);
+                $number_check = preg_split( '/(\s|&|,)/', $num_str );
                 if( !empty($number_check) AND count($number_check) > 0 ) foreach ($number_check AS $num){
                     if( strlen($num) < 1) continue;
                     if( !array_key_exists($num, $numbers) ){

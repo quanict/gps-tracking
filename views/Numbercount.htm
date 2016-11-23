@@ -61,7 +61,7 @@ $(function() {
 		return false;
 	});
 
-    jQuery('button.add').click(function(){
+    jQuery('button.add').on('click',function(){
 	alert('add');
 		var newInput = $('ul#items li').last().clone();
 		newInput.find('input[type=text]').val('');
