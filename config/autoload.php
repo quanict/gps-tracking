@@ -9,7 +9,7 @@ $autoload['libraries'] = array(
 
 );
 
-$autoload['helper'] = array('url','html','date','language','text','vtekgps','json');
+$autoload['helper'] = array('url','html','date','language','text','vtekgps','json','money');
 $autoload['config'] = array('viettracker');
 $autoload['language'] = array('gps');
-$autoload['model'] = array('Account_Model','Vehicle_Model');
+$autoload['model'] = array('Account_Model','Vehicle_Model','Demo_Model');

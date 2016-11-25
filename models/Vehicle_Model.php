@@ -594,8 +594,6 @@ class Vehicle_Model extends CI_Model {
 			} else {
 
 			}
-
-
 		} else if ((int)$year > 0){ // never using
 			$this->$table->where('YEAR(TIMESERVER)',(int)$year);
 			$this->$table->order_by('POINTS DESC ');

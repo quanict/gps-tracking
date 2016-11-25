@@ -11,11 +11,11 @@
 */
 
 $hook['post_controller_constructor'] = array(
-// 	array(
-// 		'function' => 'loagMotor',
-// 		'filename' => 'loaded.php',
-// 		'filepath' => 'hooks'
-// 	)
+	array(
+		'function' => 'loagMotor',
+		'filename' => 'loaded.php',
+		'filepath' => 'hooks'
+	),
 
     array(
         'function' => 'load_smartys',

@@ -28,21 +28,15 @@ function loagMotor(){
 			."vmap.token = {'name':'".config_item('csrf_token_name')."','val':'".$CI->security->get_csrf_hash()."'};"
 
 	;
+// 	$script.= "site_url='".site_url()."';";
+// 	$script.= "assets_url='".site_url()."';";
+
 	add_js_header($script);
-// 	$CI->template->add_js_ready($script);
-// 	die('call me');
-	$expired = $CI->Vehicle_Model->getExpiredRow();
 
-	if ( isset($CI->acountLogined) && !$CI->acountLogined->phone ){
-		$CI->msgq = 'Vui lÃ²ng nháº­p sá»‘ Ä‘iá»‡n thoáº¡i liÃªn há»‡, Ä‘á»ƒ chÃºng tÃ´i phá»¥c vá»¥ báº¡n tá»‘t hÆ¡n. <a href="tai-khoan/sua-thong-tin.html" target="_blank">Sá»­a thÃ´ng tin tÃ i khoáº£n</a>.';
-	} else if( $expired ){
-		$CI->msgq = 'Thiáº¿t bá»‹ <strong><?php echo $this->expired->name?></strong> sáº½ háº¿t háº¡n sá»­ dá»¥ng vÃ o ngÃ y <?php echo $this->expired->expiry?>. <a href="http://viettracker.vn/lien-he.html" target="_blank"> LiÃªn láº¡c vá»›i chÃºng tÃ´i Ä‘á»ƒ gia háº¡n thÃªm</a>.';
-	}
 
-	if( isset($CI->msgq) ){
-		$CI->template->add_js('miniNotification.js');
-		$CI->template->add_js_ready("$('#mini-notification').miniNotification({closeButton: true, closeButtonText: '[Ä�Ã³ng]',time: 50000});");
-	}
+    $motors = $CI->Vehicle_Model->loadVehicles($CI->session->userdata('uid'));
+    $CI->smarty->assign('motors', $motors);
+
 
 }
 

@@ -34,7 +34,8 @@ $route+=array(
 	'ban-do'=>'vehicle/geocoding',
 	'toa-do/(:any)'=>'vehicle/nodeRow',
 
-	'theo-doi'=>'vehicle/trackall',
+	//'theo-doi'=>'vehicle/trackall',
+    'theo-doi'=>'tracking/items',
 	'theo-doi/(:any)'=>'vehicle/trackone',
 
 	'lich-su'=>'vehicle/history',

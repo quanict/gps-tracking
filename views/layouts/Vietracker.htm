@@ -8,9 +8,10 @@
 <link rel="shortcut icon" href="/satellite.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-    </script>
+<script type="text/javascript">
+site_url='{site_url}';
+assets_url='{config item="assets_url"}';
+</script>
 	{assets type='css'}
 	{assets type='js'}
 	<script type="text/javascript">
@@ -20,7 +21,7 @@
 		vmap.markerInfo = new google.maps.InfoWindow();
 		$(function() {
 		    $("#gps-vehicles").dropdownchecklist({ firstItemChecksAll: true, icon: {}, width: 250});
-		    {if $js_ready}{$js_ready}{/if}
+		    {if isset($js_ready) }{$js_ready}{/if}
 		});
 
 	</script>
@@ -65,9 +66,9 @@
 				<div class="vehicles crfloat ">
 					<span style="display: inline-block; padding: 0 5px;">Chọn Phương Tiện</span>
 					<select id="gps-vehicles"  multiple="multiple" >
-						<option value="*">(Tất Cả Thiết Bị)</option>
+						<option value="*" >(Tất Cả Thiết Bị)</option>
 						{if isset($motors) AND $motors|count > 0}{foreach $motors AS $m}
-						<option value="{$m->sid}" >{$m->name}</option>
+						<option value="{$m->sid}" selected >{$m->name}</option>
 						{/foreach}{/if}
 
 					</select>

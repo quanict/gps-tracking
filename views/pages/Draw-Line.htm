@@ -1,0 +1,43 @@
+<div id="gmap"></div>
+
+{*
+<script type="text/javascript">
+{if isset($node)}
+ictmap.lastNode = ictmap.LatLng({$node->latitude},{$node->longitude})
+{/if}
+$(function() {
+
+
+    $("#gmap").gmap3({
+    	            marker: {
+    	                latLng: ictmap.lastNode,
+    	                options: { draggable: true },
+    	                events: {
+    	                    dragend: function(marker) {
+    	                		var post = marker.getPosition();
+    	                		jQuery('input[name=latitude]').val(marker.getPosition().lat());
+    	                		jQuery('input[name=longitude]').val(marker.getPosition().lng());
+
+    	                    }
+    	                }
+    	            },
+    	            map: {
+    	                options: { zoom: 22 }
+    	            }
+    	});
+
+	{if isset($node_pre) && !empty($node_pre)}{foreach $node_pre AS $n}
+	$("#gmap").gmap3({
+            marker: { latLng: ictmap.LatLng({$n->latitude},{$n->longitude}), options: ictmap.icon_option_small_red }
+	});
+	{/foreach}{/if}
+
+	{if isset($node_next) && !empty($node_next)}{foreach $node_next AS $n}
+	$("#gmap").gmap3({
+            marker: { latLng: ictmap.LatLng({$n->latitude},{$n->longitude}), options: ictmap.icon_option_small_green}
+	});
+	{/foreach}{/if}
+
+});
+    </script>
+    *}

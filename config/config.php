@@ -27,7 +27,7 @@ $config['cookie_secure']	= FALSE;
 
 $config['global_xss_filtering'] = FALSE;
 
-$config['csrf_protection'] = TRUe;
+$config['csrf_protection'] = FALSE;
 $config['csrf_token_name'] = '616493c4bf1ea9348e6cdded4e88549a'; //mapgps-token
 $config['csrf_cookie_name'] = 'c2c42055e931f811bdd794f5bf5542a5'; //mapgps-cookie
 $config['csrf_expire'] = 7200;
@@ -40,4 +40,6 @@ $config['rewrite_short_tags'] = FALSE;
 
 $config['proxy_ips'] = '';
 $config['language']	= 'vi';
+$config['date_format'] = 'd-m-Y';
+$config['enable_hooks'] = TRUE;
 

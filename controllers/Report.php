@@ -4,6 +4,8 @@ class Report extends MX_Controller {
 
 	    parent::__construct();
 	    $this->mapgps->checkLogin();
+	    $this->load->model('Report_Model');
+
 	    $this->load->module('layouts');
 	    $this->template->set_theme('viettracker')->set_layout('vietracker');
 
@@ -53,7 +55,13 @@ class Report extends MX_Controller {
 	function report_data_json($action=NULL){
 	    switch($action){
 	        case 'bieu-do':
-	            $data = $this->Vehicle_Model->report_all($this->vid,$this->input->get('day'),$this->input->get('month'),$this->input->get('year'));
+                $db = $this->Vehicle_Model->checkDatabaseGPS($this->vid);
+                if( $db=='demo' ){
+                    $data = $this->Demo_Model->report($this->vid);
+                } else {
+                    $data = $this->Vehicle_Model->report_all($this->vid,$this->input->get('day'),$this->input->get('month'),$this->input->get('year'));
+                }
+
 	            jsonData($data); exit;
 	            break;
 	        case 'diem-dung':

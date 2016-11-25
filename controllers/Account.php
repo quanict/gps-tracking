@@ -5,8 +5,8 @@ class Account extends MX_Controller {
 
 		$this->load->module('layouts');
 //
-		$this->template->set_theme('apricot')
-		->set_layout('bootstrap');
+// 		$this->template->set_theme('apricot')
+// 		->set_layout('bootstrap');
 
 		$this->userSession = array(
 				'uid'=> 0,
@@ -150,8 +150,9 @@ class Account extends MX_Controller {
 			return self::checkLogin();
 		}
 
-
-
+        add_css('signin.css');
+		$this->template->set_theme('apricot')
+				->set_layout('bootstrap');
 		$this->template
 		->set_layout('login')
 		->build('pages/login',array());

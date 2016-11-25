@@ -1,7 +1,7 @@
 <?php
 $config['gps_zoom'] = 15;
 $config['gps_node_history'] = 50;
-$config['refresh-time'] = 10; //secon
+$config['refresh-time'] = 5; //secon
 $config['fuel-add'] = 20; //percent
 
 //http://www.w3schools.com/html/html_colornames.asp
