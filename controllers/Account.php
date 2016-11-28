@@ -154,10 +154,10 @@ class Account extends MX_Controller {
 			return self::checkLogin();
 		}
 
-        add_css('signin.css');
 
-		$this->template->set_theme('apricot');
-
+		$this->template->set_theme('apricot')
+		;
+		add_css('signin.css');
 		$this->template
 		->set_layout('login')
 		->build('pages/login',array());
@@ -171,7 +171,6 @@ class Account extends MX_Controller {
 		$userData = $this->Account_Model->getLogin($user);
 
 		if(($userData)){
-
 			if($userData->status  != 1){
 				$this->msg[]= array('type'=>'error','content'=>'Account not active. Please click '.anchor('account/active?email='.$userData['email'],'Active'));
 			} else {

@@ -42,9 +42,9 @@ function loagMotor(){
 function load_smartys(){
     $ci = get_instance();
     $ci->load->module('layouts');
-    $ci->template
-        ->set_theme('apricot')
-        ->set_layout('ApricotMain');
+//     $ci->template
+//         ->set_theme('apricot')
+//         ->set_layout('ApricotMain');
 
     if( isset($ci->smarty) ){
         $smarty = $ci->smarty;
