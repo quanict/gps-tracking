@@ -27,13 +27,12 @@ class Vehicle_Model extends CI_Model {
 	}
 
 	public function checkDatabaseGPS($vid=0){
-
 		if( $this->dv->select('id')->from('motor')->where(array('id'=>$vid))->limit(1)->get()->row() ){
 		    $carSpace = config_item('carSpace');
 
 			if( $vid < $carSpace && $vid > 0 && $this->node->table_exists( "data".$vid )){
 				return 'node';
-			} else if ( $vid < 0 && $this->demo->table_exists( "demo_motor".abs($vid) ) ){
+			} else if ( $vid < 0 && $this->demo->table_exists( "motor".abs($vid) ) ){
 				return 'demo';
 			} else if( $vid >= $carSpace  && $this->car->table_exists("data".abs($vid-$carSpace)) ){
 				$this->CI->vehicleType = 'car';
