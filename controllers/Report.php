@@ -18,7 +18,8 @@ class Report extends MX_Controller {
 	        $motors = $this->Vehicle_Model->getTracks($this->session->userdata('uid'));
 	        if( isset($motors[0]->id) ){
 	            redirect('thong-ke/'.mortorID($motors[0]->id),'refresh');
-	        } else  show_404();
+	        } else
+	            show_404();
 	    } else if( $this->Vehicle_Model->checkDatabaseGPS($this->vid) ===false ){
 	        show_404();
 	    }
