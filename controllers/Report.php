@@ -54,9 +54,9 @@ class Report extends MX_Controller {
 	}
 
 	function report_data_json($action=NULL){
+	    $db = $this->Vehicle_Model->checkDatabaseGPS($this->vid);
 	    switch($action){
 	        case 'bieu-do':
-                $db = $this->Vehicle_Model->checkDatabaseGPS($this->vid);
                 if( $db=='demo' ){
                     $data = $this->Demo_Model->report($this->vid);
                 } else {
@@ -75,7 +75,12 @@ class Report extends MX_Controller {
 	            if($this->input->get('year'))
 	                $sWhere['YEAR(TIMESERVER) '] = $this->input->get('year');
 
-	            return $this->mapgps->dataTableAjax(array(),'Vehicle_Model','node_stop',$sWhere); break;
+	            if( $db=='demo' ){
+	                return $this->mapgps->dataTableAjax(array(),'Demo_Model','node_stop',$sWhere);
+	            } else {
+	                return $this->mapgps->dataTableAjax(array(),'Vehicle_Model','node_stop',$sWhere);
+	            }
+	            break;
 	        case 'bieu-do-xang':
 	            $data = $this->Vehicle_Model->report_fuel($this->vid,$this->input->get('day'),$this->input->get('month'),$this->input->get('year'));
 	            jsonData($data); exit;

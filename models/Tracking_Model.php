@@ -63,6 +63,7 @@ class Tracking_Model extends CI_Model {
 
 	        $node_pre = $this->$table->where('id <',$data->id)->get("motor".abs($vid))->row();
 	        $data->speed = distance($node_pre->latitude, $node_pre->longitude, $data->la, $data->lo,false)*3600;
+	        $data->speed = round($data->speed,2);
 	    } else {
 	        $data = null;
 	    }
