@@ -33,7 +33,6 @@ function loagMotor(){
 
 	add_js_header($script);
 
-
     $motors = $CI->Vehicle_Model->loadVehicles($CI->session->userdata('uid'));
     $CI->smarty->assign('motors', $motors);
 
@@ -42,6 +41,11 @@ function loagMotor(){
 
 function load_smartys(){
     $ci = get_instance();
+    $ci->load->module('layouts');
+    $ci->template
+        ->set_theme('apricot')
+        ->set_layout('ApricotMain');
+
     if( isset($ci->smarty) ){
         $smarty = $ci->smarty;
         $userinfo = $ci->Account_Model->userInfo($ci->session->userdata('uid'));

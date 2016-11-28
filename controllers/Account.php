@@ -74,6 +74,10 @@ class Account extends MX_Controller {
 	}
 
 	public function changePassword(){
+	    $random = random_string('alpha',10);
+	    bug(md5("demo:".$random).':'.$random);
+	    die('aaa');
+
 		$this->mapgps->checkLogin();
 		$this->page_title[] = lang('Change Password');
 // 		echo hexdec('344A62');exit;
@@ -151,8 +155,9 @@ class Account extends MX_Controller {
 		}
 
         add_css('signin.css');
-		$this->template->set_theme('apricot')
-				->set_layout('bootstrap');
+
+		$this->template->set_theme('apricot');
+
 		$this->template
 		->set_layout('login')
 		->build('pages/login',array());
@@ -164,6 +169,7 @@ class Account extends MX_Controller {
 		$user['password'] = $this->input->post('password');
 
 		$userData = $this->Account_Model->getLogin($user);
+
 		if(($userData)){
 
 			if($userData->status  != 1){

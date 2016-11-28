@@ -13,9 +13,10 @@ class Account_Model extends CI_Model {
 		$query = $this->account->get();
 
 		$data = $query->row();
-
 		if($data){
-			if($data->test == 1) return $data;
+			if($data->test == 1)
+			    return $data;
+
 			$salt = explode(':',$data->password);
 			if( isset($salt[1]) && $data->password == (md5($user['password'].':'.$salt[1]).':'.$salt[1]) ){
 				$this->account->where('id', $data->uid);

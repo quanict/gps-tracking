@@ -8,6 +8,10 @@
 <link rel="shortcut icon" href="/satellite.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript">
+site_url='{site_url}';
+assets_url='{config item="assets_url"}';
+</script>
 {assets type='css'} {assets type='js'}
 </head>
 <body>
@@ -19,8 +23,7 @@
 		{$_body}
 
 		<div style="text-align: center; margin: 0 auto;">
-			<h6 style="color: #fff;">GSP Tracking 1.0.0.1 Powered by © ICT
-				2014</h6>
+			<h6 style="color: #fff;">GSP Tracking 1.0.0.1 Powered by © ICT 2016</h6>
 		</div>
 
 	</div>
@@ -48,16 +51,14 @@
 		    .gmap3(
 			    {
 
-				map : {
-				    options : {
+
 					center:[21.030047, 105.842441],
 					zoom : 15,
 					scrollwheel: false,
 				     streetViewControl: false,
 				     mapTypeControl: false,
 
-				    }
-				}
+
 			    });
 
 	});
