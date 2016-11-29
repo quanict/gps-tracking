@@ -38,8 +38,9 @@ $route+=array(
     'theo-doi'=>'tracking/items',
 	'theo-doi/(:any)'=>'vehicle/trackone',
 
-	'lich-su'=>'vehicle/history',
-	'lich-su/(:any)'=>'vehicle/history',
+// 	'lich-su'=>'vehicle/history',
+    'lich-su'=>'history/item',
+	'lich-su/(:any)'=>'history/data',
 
 	'thong-ke'=>'Report',
 	'thong-ke/(:any)'=>'Report',

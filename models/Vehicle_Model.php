@@ -216,7 +216,7 @@ class Vehicle_Model extends CI_Model {
 
 		$query = $this->$table->get();//->row();
         if( !is_object($query) ){
-//             bug($this->$table->last_query());
+            bug($this->$table->last_query()); die;
         } else {
             $data = $query->row();
         }
@@ -344,7 +344,7 @@ class Vehicle_Model extends CI_Model {
 			$from = 'data'.abs($vehicleID).' AS node';
 		}
 
-		$this->$table->select('node.La AS la, node.Lon AS lo, node.TIMESERVER AS t, node.SPEED AS speed, node.GPSLEVEL AS gps, node.GsmLEVEL AS gsm, node.VAQ AS vaq, node.COURSE AS rotate')->from($from);
+		$this->$table->select('node.latitude AS la, node.longitude AS lo, node.TIMESERVER AS t, node.SPEED AS speed, node.GPSLEVEL AS gps, node.GsmLEVEL AS gsm, node.VAQ AS vaq, node.COURSE AS rotate')->from($from);
 		$this->$table->where('node.TIMESERVER',date("Y-m-d H:i:s", $time) );
 		$data = $this->$table->get()->row();
 		//bug($this->node->last_query()); exit;
@@ -355,15 +355,20 @@ class Vehicle_Model extends CI_Model {
 	public function getStopNodeByTime($vehicleID,$time,$end=null,$calculaStopTime=TRUE){
 		$table = self::checkDatabaseGPS($vehicleID);
 
-		$selectField = 'POINTS AS id, node1.La AS la, node1.Lon AS lo, node1.TIMESERVER AS t, node1.SPEED AS speed, node1.GPSLEVEL AS gps, node1.GsmLEVEL AS gsm';
-		if($table=='car'){
-			$tagetID = intval(abs($vehicleID)-config('carSpace'));
+		$selectField = 'POINTS AS id, node1.latitude AS la, node1.longitude AS lo, node1.TIMESERVER AS t, node1.SPEED AS speed, node1.GPSLEVEL AS gps, node1.GsmLEVEL AS gsm';
 
-		} else {
-			$tagetID = abs($vehicleID);
+		switch ($table){
+		    case 'car':
+		        $tagetID = intval(abs($vehicleID)-config('carSpace'));
+		        $tableTaget = $this->$table->dbprefix("data$tagetID");
+		        break;
+		    case 'demo':
+		        $tableTaget = $this->$table->dbprefix("motor".abs($vehicleID));
+		        break;
 		}
 
-		$this->$table->select($selectField)->from("data$tagetID AS node1");
+
+		$this->$table->select($selectField)->from("$tableTaget AS node1");
 		if($end && $time ){
 			$this->$table->where('(TIMESERVER) >=',date("Y-m-d H:i:s", $time ));
 			$this->$table->where('(TIMESERVER) <=',date("Y-m-d H:i:s", $end ));
@@ -374,27 +379,30 @@ class Vehicle_Model extends CI_Model {
 			$this->$table->where('DAY(TIMESERVER)',date("d", $time) );
 			//			$this->node->where('(TIMESERVER)',date("Y-m-d", $time) );
 		}
-// 		$this->node->where('YEAR(node1.TIMESERVER)',date("Y", $time) );
-// 		$this->node->where('MONTH(node1.TIMESERVER)',date("m", $time) );
-// 		$this->node->where('DAY(node1.TIMESERVER)',date("d", $time) );
-		$this->$table->where('node1.lon <',180);
-		$this->$table->where('node1.lon >',-180);
-		$this->$table->where('node1.la <',90);
-		$this->$table->where('node1.la >',-90);
+
+		$this->$table->where('node1.longitude <',180);
+		$this->$table->where('node1.longitude >',-180);
+		$this->$table->where('node1.latitude <',90);
+		$this->$table->where('node1.latitude >',-90);
 		$this->$table->where('node1.speed',0);
-		$this->$table->where('( SELECT node2.`SPEED` FROM (`data'.$tagetID.'` AS node2) WHERE node2.`POINTS` =  (node1.POINTS - 1)  ) = ','0');
-		$this->$table->where('( SELECT node3.`SPEED` FROM (`data'.$tagetID.'` AS node3) WHERE node3.`POINTS` =  (node1.POINTS - 2)  ) = ','0');
-		$this->$table->where('( SELECT node4.`SPEED` FROM (`data'.$tagetID.'` AS node4) WHERE node4.`POINTS` =  (node1.POINTS - 3)  ) > ','0');
+		$this->$table->where('( SELECT node2.`SPEED` FROM (`'.$tableTaget.'` AS node2) WHERE node2.`POINTS` =  (node1.POINTS - 1)  ) = ','0');
+		$this->$table->where('( SELECT node3.`SPEED` FROM (`'.$tableTaget.'` AS node3) WHERE node3.`POINTS` =  (node1.POINTS - 2)  ) = ','0');
+		$this->$table->where('( SELECT node4.`SPEED` FROM (`'.$tableTaget.'` AS node4) WHERE node4.`POINTS` =  (node1.POINTS - 3)  ) > ','0');
 		$this->$table->order_by('node1.TIMESERVER ASC ');
-		//$this->node->limit(12);
-		$data = $this->$table->get()->result();
-		//bug($this->node->last_query());exit;
+
+		$query = $this->$table->get();//->result();
+		if( !is_object($query) ){
+		    bug($this->$table->last_query());
+		    bug($this->$table);die;
+		} else {
+		    $data = $query->result();
+		}
+
 		if($data && $calculaStopTime){
 			foreach($data AS $index=>$node){
 				$data[$index]->t = self::calculaStopTime($vehicleID,$node->id);
 			}
 		}
-		//$query = $this->node->get();
 
 		return $data;
 	}

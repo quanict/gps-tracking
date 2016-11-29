@@ -1,0 +1,54 @@
+<div class="gps-tool clearfix">
+	<div class="clfloat">
+		<div class="clfloat" style="padding-left: 55px;">
+			Trong Ngày<input name="gps-date" class="ui-date hasDatepicker"
+				value="" min="" readonly="true" type="text">
+		</div>
+		<div class="clfloat" style="padding-left: 10px;">
+			Từ<input name="gps-time-begin" class="ui-time hasDatepicker" value=""
+				readonly="true" id="dp1480375242072" type="text"><img
+				class="ui-datepicker-trigger"
+				src="http://as1.viettracker.vn/images/clock.png" alt="..."
+				title="...">
+		</div>
+		<div class="clfloat" style="padding-left: 10px;">
+			Đến<input name="gps-time-end" class="ui-time hasDatepicker" value=""
+				readonly="true" id="dp1480375242073" type="text"><img
+				class="ui-datepicker-trigger"
+				src="http://as1.viettracker.vn/images/clock.png" alt="..."
+				title="...">
+		</div>
+	</div>
+	<div class="clfloat ">
+		<span style="display: inline-block; padding: 0 5px;">Chọn
+			Phương Tiện</span>
+			<select id="gps-vehicles">
+			{if isset($motors) AND $motors|count > 0}{foreach $motors AS $m}
+			<option value="{$m->sid}" selected >{$m->name}</option>
+			{/foreach}{/if}
+			</select>
+	</div>
+	<div class="clfloat" style="margin-top: 2px;">
+		<button name="gps-history-submit"
+			class="submit ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+			role="button" aria-disabled="false">
+			<span class="ui-button-text">Xem Dữ Liệu</span>
+		</button>
+		<button name="gps-history-play"
+			class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+			role="button" aria-disabled="false">
+			<span class="ui-button-text">Bắt Đầu</span>
+		</button>
+	</div>
+	<div class="clfloat"
+		style="width: 200px; margin-top: 7px; margin-left: 15px;">
+		<div
+			class="ui-slider background-green ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
+			name="playback-speed">
+			<div class="ui-slider-range ui-widget-header ui-slider-range-min"
+				style="width: 10.0503%;"></div>
+			<a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+				style="left: 10.0503%;"></a>
+		</div>
+	</div>
+</div>
