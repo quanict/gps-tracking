@@ -35,6 +35,12 @@ class Draw extends MX_Controller {
 
 	    $data['node_pre'] = $this->db->where('id <',$id)->order_by('id DESC')->limit(2)->get("motor$vid")->result();
 	    $data['node_next'] = $this->db->where('id >',$id)->order_by('id ASC')->limit(10)->get("motor$vid")->result();
+        if( abs($data['node']->angle) <=0 AND count($data['node_pre']) > 0){
+            $node_pre = $data['node_pre'][0];
+            $data['node']->angle = angle($node_pre->latitude,$node_pre->longitude,$data['node']->latitude,$data['node']->longitude);
+        }
+
+// 	    bug($data['node']);die;
 
 	    $data['vstr'] = $vstr;
 	    echo json_encode($data);die;

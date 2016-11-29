@@ -9,7 +9,7 @@ class Tracking_Model extends CI_Model {
 	}
 
 	public function getLastNode_demo($vid,$where=null){
-	    $selectField = 'latitude AS la, longitude AS lo, TIMESERVER AS t, SPEED AS speed, GPSLEVEL AS gps, GsmLEVEL AS gsm, VAQ AS vaq, COURSE AS rotate, id';
+	    $selectField = 'latitude AS la, longitude AS lo, TIMESERVER AS t, SPEED AS speed, GPSLEVEL AS gps, GsmLEVEL AS gsm, VAQ AS vaq, COURSE AS rotate, id, angle';
 	    $table = 'demo';
 
 	    if( $table === FALSE )
@@ -17,8 +17,8 @@ class Tracking_Model extends CI_Model {
 	    $vid = abs($vid);
 
 	    $vehicle = $this->Vehicle_Model->getVehicle($vid);
-
-	    $this->$table->select($selectField)->from("motor".abs($vid));
+	    $table_veicle = "motor".abs($vid);
+	    $this->$table->select($selectField)->from($table_veicle);
 
 	    if($where){
 	        $this->$table->where($where);
@@ -61,9 +61,18 @@ class Tracking_Model extends CI_Model {
 	        $data->la = $this->mapgps->shortDegrees($data->la);
 	        $data->lo = $this->mapgps->shortDegrees($data->lo);
 
-	        $node_pre = $this->$table->where('id <',$data->id)->get("motor".abs($vid))->row();
-	        $data->speed = distance($node_pre->latitude, $node_pre->longitude, $data->la, $data->lo,false)*3600;
-	        $data->speed = round($data->speed,2);
+	        $node_pre = $this->$table->where('id <',$data->id)->order_by('id DESC')->get("motor".abs($vid))->row();
+	        if( $data->speed <=0  ){
+	            $data->speed = distance($node_pre->latitude, $node_pre->longitude, $data->la, $data->lo,false)*3600;
+	            $this->$table->where('id',$data->id)->update($table_veicle,array('SPEED'=>$data->speed));
+	            $data->speed = round($data->speed,2);
+	        }
+
+	        if( ABS($data->angle) <=0 ){
+	            $data->angle = angle($node_pre->latitude,$node_pre->longitude,$data->la,$data->lo);;
+	            $this->$table->where('id',$data->id)->update($table_veicle,array('angle'=>$data->angle));
+	        }
+
 	    } else {
 	        $data = null;
 	    }

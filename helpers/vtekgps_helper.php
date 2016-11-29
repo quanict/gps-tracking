@@ -94,6 +94,30 @@ function distance1($lat1, $lng1, $lat2, $lng2, $miles = true)
     return ($miles ? ($km * 0.621371192) : $km);
 }
 
+function angle( $lat1, $lng1, $lat2, $lng2 ) {
+    // Convert to radians.
+
+//     // Compute the angle.
+//     $angle = - tan( sin( $lng1 - $lng2 ) * cos( $lat2 ), cos( $lat1 ) * sin ( $lat2 ) - sin ( $lat1 ) * cos( $lat2 ) * cos( $lng1 - $lng2 ) );
+//     if ( $angle < 0.0 )
+//         $angle  += M_PI * 2.0;
+//     if ($angle == 0) {$angle=1.5;}
+//     return $angle;
+
+    $dLon = ($lng2 - $lng1);
+
+    $y = sin($dLon) * cos($lat2);
+    $x = cos($lat1) * sin($lat2) - sin($lat1) * cos($lat2) * cos($dLon);
+
+    $brng = atan2($y, $x);
+
+    $brng = rad2deg($brng);
+    $brng = ($brng + 360) % 360;
+    $brng = 360 - $brng; // count degrees counter-clockwise - remove to make clockwise
+
+    return $brng;
+}
+
 
 function alphaID($in, $to_num = false, $pad_up = false, $passKey = null) {
     $index = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ";
