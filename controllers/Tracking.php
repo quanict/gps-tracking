@@ -49,7 +49,7 @@ class Tracking extends MX_Controller {
 	        return jsonData($data);
 	    }
 	    $headScript =''
-	        .'vmap.trackingLink = "'.base_url().'theo-doi/'.$this->vstr.'.json";'
+	        .'vmap.trackingLink = "'.base_url().'tracking/trackone/'.$this->vstr.'.json";'
 	            //.'vmap.playBackLink = "'.site_url().'du-lieu/lich-su.kml?vehicle='.$motorID.'";'
 	    .'vmap.ini();'
 	        ."tracking.polyline[".$this->vid."] =  new google.maps.Polyline({ strokeColor: '#".$this->color[0]."'});"

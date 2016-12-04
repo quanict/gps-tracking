@@ -140,7 +140,7 @@ class Account extends MX_Controller {
 				);
 				$this->session->set_userdata($this->userSession);
 
-				$continue = ( $this->input->get('r')!='' )?$this->input->get('r'):'theo-doi';
+				$continue = ( $this->input->get('r')!='' )?$this->input->get('r'):'tracking';
 // 				if($this->input->get('format')=='json'){
 // 					//return returnJson(true);
 // 				} else {
