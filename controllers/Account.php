@@ -108,7 +108,7 @@ class Account extends MX_Controller {
 
 	public function login(){
 		if ($this->session->userdata('uid')){
-			redirect('theo-doi','refresh');
+			redirect('tracking','refresh');
 		}
 		if($this->input->post()) {
 			return self::checkLogin();
