@@ -86,7 +86,7 @@ function load_smartys(){
 	                                                            $motors = $CI->Vehicle_Model->loadVehicles($CI->session->userdata('uid'));
 
         $CI->smarty->assign('motors', $motors);
-        if ( $CI->uri->segment(1)=='theo-doi' AND $CI->uri->total_segments() < 2){
+        if ( $CI->uri->segment(1)=='tracking' AND $CI->uri->total_segments() < 3){
             $smarty->assign('tracking_multi',true);
         } else {
             $smarty->assign('tracking_multi',false);

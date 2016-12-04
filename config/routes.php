@@ -31,15 +31,15 @@ $route+=array(
 //$route['du-lieu/lich-su/(:num)/(:any)'] = 'resouce/playback/$1/$2';
 // $route['du-lieu/lich-su'] = 'resouce/playback';
 $route+=array(
-	'ban-do'=>'vehicle/geocoding',
+	'map'=>'vehicle/geocoding',
 	'toa-do/(:any)'=>'vehicle/nodeRow',
 
 	//'theo-doi'=>'vehicle/trackall',
-    'theo-doi'=>'tracking/items',
-	'theo-doi/(:any)'=>'tracking/trackone',
+//     'theo-doi'=>'tracking/items',
+// 	'theo-doi/(:any)'=>'tracking/trackone',
 
 
-	'thong-ke'=>'Report',
+// 	'thong-ke'=>'Report',
 	'thong-ke/(:any)'=>'Report',
     'thong-ke/(:any)/(:any)'=>'Report/report_data_json/$2',
 

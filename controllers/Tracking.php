@@ -4,7 +4,7 @@ class Tracking extends MX_Controller {
 	    parent::__construct();
 	    $this->mapgps->checkLogin();
 	    $this->load->model('Tracking_Model');
-	    $this->vstr = $this->uri->segment(2);
+	    $this->vstr = $this->uri->segment(3);
 	    $this->vid = mortorID($this->vstr,true);
 	    $this->color = config_item('color');
 
@@ -16,6 +16,10 @@ class Tracking extends MX_Controller {
 
 	    $this->template->set_theme('viettracker')
 	    ->set_layout('vietracker');
+	}
+
+	function index(){
+	    redirect('tracking/items');
 	}
 
 	public function items(){

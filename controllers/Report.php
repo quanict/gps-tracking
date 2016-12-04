@@ -9,11 +9,18 @@ class Report extends MX_Controller {
 	    $this->load->module('layouts');
 	    $this->template->set_theme('viettracker')->set_layout('vietracker');
 
-	    $this->vstr = $this->uri->segment(2);
+	    $this->vstr = $this->uri->segment(3);
 	    $this->vid = mortorID($this->vstr,true);
 	}
 
 	function index(){
+	    $motors = $this->Vehicle_Model->getTracks($this->session->userdata('uid'));
+	    if( isset($motors[0]->id) ){
+	        redirect('report/item/'.mortorID($motors[0]->id));
+	    }
+	}
+
+	public function item(){
 	    if( $this->vstr == '' ){
 	        $motors = $this->Vehicle_Model->getTracks($this->session->userdata('uid'));
 	        if( isset($motors[0]->id) ){
@@ -23,9 +30,10 @@ class Report extends MX_Controller {
 	    } else if( $this->Vehicle_Model->checkDatabaseGPS($this->vid) ===false ){
 	        show_404();
 	    }
-	    $action = $this->uri->segment(3);
-	    if( $action && $this->url_suffix == 'json'){
 
+	    $action = $this->uri->segment(4);
+	    if( $action && $this->uri->extension =='json'){
+            return $this->report_data_json($action);
 	    } else if ($this->url_suffix == 'xls'){
 	        return self::exportExcel();
 	    } else {
