@@ -29,10 +29,17 @@ $hook['post_controller_constructor'][] = array(
 );
 
 $hook['post_controller_constructor'][] = array(
-    'function' => 'loagMotor',
+    'function' => 'loadModule',
     'filename' => 'loaded.php',
     'filepath' => 'hooks'
 );
+$hook['pre_controller'][] = array(
+    'function' => 'load_modules',
+    'filename' => 'loaded.php',
+    'filepath' => 'hooks'
+);
+
+
 
 
 

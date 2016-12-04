@@ -21,4 +21,6 @@ class Smarty_func {
             return alphabet_id( $face + intval($int) );
         }
     }
+
+
 }

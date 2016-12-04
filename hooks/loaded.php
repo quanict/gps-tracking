@@ -1,6 +1,18 @@
 <?php
+
+function load_modules(){
+    $CI =& get_instance();
+     get_instance()->load->module('layouts');
+     if( $CI->session->userdata('uid') ){
+         $CI->acountLogined = $CI->mapgps->userInfo();
+     }
+
+
+
+}
+
 function loagMotor(){
-	$CI =& get_instance();
+
 
 // 	$CI->head_script.='var assets_url = "'.subdomain('assets_url').'";'
 // 					.'var site_url = "'.site_url().'";'
@@ -15,33 +27,15 @@ function loagMotor(){
 // 		}
 // 	}
 
-	if( $CI->session->userdata('uid') ){
-		$CI->acountLogined = $CI->mapgps->userInfo();
-	}
 
-	$script = ''
-			.'vmap.zoom = '.$CI->config->item('gps_zoom').';'
-			.'tracking.center = true;'
-			.'vmap.markerInfo = new google.maps.InfoWindow();'
-			.'vmap.refresh = '.$CI->config->item('refresh-time').';'
-			.'vmap.timestamp = '.(strtotime('now')*1000).';'
-			."vmap.token = {'name':'".config_item('csrf_token_name')."','val':'".$CI->security->get_csrf_hash()."'};"
-
-	;
-// 	$script.= "site_url='".site_url()."';";
-// 	$script.= "assets_url='".site_url()."';";
-
-	add_js_header($script);
-
-    $motors = $CI->Vehicle_Model->loadVehicles($CI->session->userdata('uid'));
-    $CI->smarty->assign('motors', $motors);
 
 
 }
 
 function load_smartys(){
     $ci = get_instance();
-    $ci->load->module('layouts');
+//     $ci->load->module('layouts');
+
 //     $ci->template
 //         ->set_theme('apricot')
 //         ->set_layout('ApricotMain');
@@ -74,5 +68,29 @@ function load_smartys(){
 
 	                                ;
 	                                add_js_header($script);
+	                                $CI =& get_instance();
+	                                $script = ''
+	                                    .'vmap.zoom = '.$CI->config->item('gps_zoom').';'
+	                                        .'tracking.center = true;'
+	                                            .'vmap.markerInfo = new google.maps.InfoWindow();'
+	                                                .'vmap.refresh = '.$CI->config->item('refresh-time').';'
+	                                                    .'vmap.timestamp = '.(strtotime('now')*1000).';'
+	                                                        ."vmap.token = {'name':'".config_item('csrf_token_name')."','val':'".$CI->security->get_csrf_hash()."'};"
+
+	                                                            ;
+	                                                            // 	$script.= "site_url='".site_url()."';";
+	                                                            // 	$script.= "assets_url='".site_url()."';";
+
+	                                                            add_js_header($script);
+
+	                                                            $motors = $CI->Vehicle_Model->loadVehicles($CI->session->userdata('uid'));
+
+        $CI->smarty->assign('motors', $motors);
+        if ( $CI->uri->segment(1)=='theo-doi' AND $CI->uri->total_segments() < 2){
+            $smarty->assign('tracking_multi',true);
+        } else {
+            $smarty->assign('tracking_multi',false);
+        }
+
     }
 }

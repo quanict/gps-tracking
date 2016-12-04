@@ -34,9 +34,9 @@ assets_url='{config item="assets_url"}';
 
 				<li>{anchor uri='ban-do' txt='Map'}</li>
 				<li>{anchor uri='theo-doi' txt='Position'}</li>
-				<li>{anchor uri='lich-su' txt='History'}</li>
+				<li>{anchor uri='history' txt='History'}</li>
 				<li>{anchor uri='thong-ke' txt='Report'}</li>
-				<li>{anchor uri='thiet-bi' txt='Manager'}</li>
+				<li>{anchor uri='setting' txt='Manager'}</li>
 			</ul>
 		</div>
 		<div class="account">
@@ -65,7 +65,7 @@ assets_url='{config item="assets_url"}';
 				<div id="vehicle-info"></div>
 				<div class="vehicles crfloat ">
 					<span style="display: inline-block; padding: 0 5px;">Chọn Phương Tiện</span>
-					<select id="gps-vehicles"  multiple="multiple" >
+					<select id="gps-vehicles"  {if isset($tracking_multi) && $tracking_multi}multiple="multiple"{/if} >
 						<option value="*" >(Tất Cả Thiết Bị)</option>
 						{if isset($motors) AND $motors|count > 0}{foreach $motors AS $m}
 						<option value="{$m->sid}" selected >{$m->name}</option>

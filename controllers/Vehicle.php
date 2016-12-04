@@ -157,37 +157,37 @@ class Vehicle extends MX_Controller {
 
 	}
 
-	public function trackone(){
-		if( !$this->vid || $this->Vehicle_Model->checkDatabaseGPS($this->vid) === false ){
-			show_404();
-		} else if ($this->url_suffix == 'json'){
-// 			if( $this->vehicleType =='car' ){
-// 				$data = $this->Vehicle_Model->getLastNodeCar($this->vid);
-// 			} else {
-				$data = $this->Vehicle_Model->getLastNode($this->vid);
-// 			}
+// 	public function trackone(){
+// 		if( !$this->vid || $this->Vehicle_Model->checkDatabaseGPS($this->vid) === false ){
+// 			show_404();
+// 		} else if ($this->url_suffix == 'json'){
+// // 			if( $this->vehicleType =='car' ){
+// // 				$data = $this->Vehicle_Model->getLastNodeCar($this->vid);
+// // 			} else {
+// 				$data = $this->Vehicle_Model->getLastNode($this->vid);
+// // 			}
 
-			$data->timestamp = strtotime('now')*1000;
-			return jsonData($data);
-		}
-		$headScript =''
-		.'vmap.trackingLink = "'.site_url().'theo-doi/'.$this->vstr.'.json";'
-		//.'vmap.playBackLink = "'.site_url().'du-lieu/lich-su.kml?vehicle='.$motorID.'";'
-		.'vmap.ini();'
-		."tracking.polyline[".$this->vid."] =  new google.maps.Polyline({ strokeColor: '#".$this->color[0]."'});"
-		.'tracking.trackingOneIni();'
-		//.'$("#gps-vehicles").val('.$this->vid.');'
-		.'$(".gmap-area").css({"margin-top":"10px"});'
-		//."$('#vehicle-info').css({'height':22,'padding-top':5});"
-		//.'vmap.tracking();'
-		//.'window.setInterval(function() { vmap.tracking();}, 5000);'
-		;
-		$this->template->add_js_ready($headScript);
-		$this->template->write('content', self::status('tracking',false));
-		$data['vehicle'] = $this->Vehicle_Model->getVehicle($this->vid);
-		$this->template->write_view('content', 'page/tracking_one',$data);
-		$this->template->render();
-	}
+// 			$data->timestamp = strtotime('now')*1000;
+// 			return jsonData($data);
+// 		}
+// 		$headScript =''
+// 		.'vmap.trackingLink = "'.site_url().'theo-doi/'.$this->vstr.'.json";'
+// 		//.'vmap.playBackLink = "'.site_url().'du-lieu/lich-su.kml?vehicle='.$motorID.'";'
+// 		.'vmap.ini();'
+// 		."tracking.polyline[".$this->vid."] =  new google.maps.Polyline({ strokeColor: '#".$this->color[0]."'});"
+// 		.'tracking.trackingOneIni();'
+// 		//.'$("#gps-vehicles").val('.$this->vid.');'
+// 		.'$(".gmap-area").css({"margin-top":"10px"});'
+// 		//."$('#vehicle-info').css({'height':22,'padding-top':5});"
+// 		//.'vmap.tracking();'
+// 		//.'window.setInterval(function() { vmap.tracking();}, 5000);'
+// 		;
+// 		$this->template->add_js_ready($headScript);
+// 		$this->template->write('content', self::status('tracking',false));
+// 		$data['vehicle'] = $this->Vehicle_Model->getVehicle($this->vid);
+// 		$this->template->write_view('content', 'page/tracking_one',$data);
+// 		$this->template->render();
+// 	}
 
 	public function nodeRow(){
 		if($this->url_suffix == 'json' && $this->vid ){

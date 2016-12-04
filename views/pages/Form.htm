@@ -1,0 +1,27 @@
+{include file='../blocks/menu_left.htm'}
+<div class="content-box block-right">
+	<div class="box-body">
+		<div class="box-header clear">
+		<h2 class="fl" >{if isset($page_title)}{$page_title}{/if}</h2>
+		</div>
+	</div>
+	<div class="box-wrap clear">
+		{if isset($error) AND $error|count_characters > 5 }
+		<div class="ui-widget ui-msg"><div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"><p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span><strong>{lang txt='Error'}:</strong> {lang txt=$error}</p></div></div>
+		{/if}
+		<div class="talbe-view dataTables_wrapper">
+		<form action="" method="post">
+			{if isset($fields) && $fields|@count > 0}
+				{foreach $fields AS $name=>$field }
+					{inputs name=$name field=$field}
+				{/foreach}
+			{/if}
+
+			<div class="button_bar clearfix">
+				<input type="submit" value="{if isset($submit_title)}{$submit_title}{else}{lang txt='Submit'}{/if}">
+				<input type="button" value="{lang txt='Cancel'}" class="cancel ui-button">
+			</div>
+		</form>
+		</div>
+	</div>
+</div>

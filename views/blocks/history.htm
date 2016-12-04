@@ -20,13 +20,12 @@
 		</div>
 	</div>
 	<div class="clfloat ">
-		<span style="display: inline-block; padding: 0 5px;">Chọn
-			Phương Tiện</span>
-			<select id="gps-vehicles">
-			{if isset($motors) AND $motors|count > 0}{foreach $motors AS $m}
-			<option value="{$m->sid}" selected >{$m->name}</option>
-			{/foreach}{/if}
-			</select>
+		<span style="display: inline-block; padding: 0 5px;">Chọn Phương Tiện</span>
+		<select id="gps-vehicles">
+		{if isset($motors) AND $motors|count > 0}{foreach $motors AS $m}
+		<option value="{$m->sid}" {if $m->sid==$vstr}selected{/if} >{$m->name}</option>
+		{/foreach}{/if}
+		</select>
 	</div>
 	<div class="clfloat" style="margin-top: 2px;">
 		<button name="gps-history-submit"

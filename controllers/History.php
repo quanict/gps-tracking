@@ -3,13 +3,25 @@ class History extends MX_Controller {
     function __construct(){
         parent::__construct();
         $this->mapgps->checkLogin();
-        $this->vstr = $this->uri->segment(2);
-        $this->vid = mortorID($this->vstr,true);
+        $this->vstr = $this->uri->segment(3);
+        if( strlen($this->vstr) < 1  ){
+            $this->vid = $this->Vehicle_Model->getLastVehicle();
+            $this->vstr = mortorID($this->vid);
+        } else {
+            $this->vid = mortorID($this->vstr,true);
+        }
+
         $this->load->model("History_Model");
+        $this->template->set_theme('viettracker')
+        ->set_layout('vietracker');
+    }
+
+    function index(){
+        redirect('history/item/'.$this->vstr);
     }
 
     function item(){
-        $this->template->set_theme('viettracker')->set_layout('vietracker');
+//         $this->template->set_theme('viettracker')->set_layout('vietracker');
         add_js('infobubble.js');
         add_js('playback.js');
         $headScript =''
@@ -19,6 +31,7 @@ class History extends MX_Controller {
             ;
         add_js_ready($headScript);
         $data['header_ctr'] = 'blocks/history';
+        $data['vstr'] = $this->vstr;
         $this->template->build('pages/history',$data);
 
     }

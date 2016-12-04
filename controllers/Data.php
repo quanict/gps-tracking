@@ -13,8 +13,10 @@ class Data extends MX_Controller {
 	}
 
 	function import(){
-        $file = FCPATH.'Xe SH H.anh.kml';
+        $file = realpath(FCPATH.'18_06_2013 7_49.kml');
+//         bug($file);die;
 	    $html = file_get_html($file);
+
 	    foreach ($html->find('Placemark') AS $note){
 	        $styleUrl = $note->find('styleUrl',0)->innertext;
 	        if( $styleUrl == '#start' OR $styleUrl =='#end' ){
@@ -24,9 +26,9 @@ class Data extends MX_Controller {
 	                'latitude'=>$lat,
 	                'longitude'=>$lon,
 	                'height'=>ABS($height),
-	                'TIMESERVER'=>date( 'Y-m-d H:i:s', $time )
+	                'TIMESERVER'=>"2016-10-20 ".date( 'H:i:s', $time )
 	            );
-	            $this->db->insert('motor1',$data);
+	            $this->db->insert('motor4',$data);
 	        } elseif( $styleUrl == '#track') {
                 foreach ($note->find('gx:coord') AS $k=>$gn){
                     list($lon,$lat,$height) = explode(" ", $gn->innertext);
@@ -36,9 +38,9 @@ class Data extends MX_Controller {
                         'latitude'=>$lat,
                         'longitude'=>$lon,
                         'height'=>ABS($height),
-                        'TIMESERVER'=>date( 'Y-m-d H:i:s', $time )
+                        'TIMESERVER'=>"2016-10-20 ".date( 'H:i:s', $time )
                     );
-                    $this->db->insert('motor1',$data);
+                    $this->db->insert('motor4',$data);
 //                     bug($data);die;
                 }
 	        }

@@ -6,9 +6,9 @@ class Mapgps {
 	}
 	function checkLogin(){
 		if (!$this->CI->session->userdata('uid')){
-			if($this->CI->uri->uri_string()!='dang-nhap'){
+			//if($this->CI->uri->uri_string()!='dang-nhap'){
 				redirect('dang-nhap','refresh',null,'r='.urlencode(current_url()) );
-			}
+			//}
 		}
 		if(!$this->CI->session->userdata('uid') && $this->CI->uri_string()!='dang-nhap'){
 			redirect('dang-nhap','refresh');

@@ -6,10 +6,7 @@ class Demo_Model extends CI_Model {
 	}
 
 	function report($vid){
-	    $vid = abs($vid);
-
-
-	    $this->db->select('*')->from("motor$vid");
+	    $this->db->select('*')->from("motor".abs($vid));
 
 	    $this->db->where('id <',1119);
 	    $this->db->order_by('id DESC ');

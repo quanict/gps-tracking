@@ -9,7 +9,8 @@ class Vehicle_Model extends CI_Model {
 		$this->node = $this->load->database('node',true);
 		$this->demo = $this->load->database('nodedemo',true);
 		$this->car = $this->load->database('car',true);
-		$this->CI =& get_instance();
+// 		$this->CI =& get_instance();
+// 		die('xyz');
 	}
 
 	function getExpiredRow(){
@@ -82,7 +83,7 @@ class Vehicle_Model extends CI_Model {
 
 		if($data){
 			foreach($data AS $k=>$item){
-				$data[$k]->name = ($item->name !='' )?$item->name:'viettracker-'.base64_encode($item->id);
+				$data[$k]->name = ($item->name !='' )?$item->name:'vehicle-'.base64_encode($item->id);
 				$data[$k]->sid = mortorID($item->id);
 			}
 		}
@@ -134,38 +135,46 @@ class Vehicle_Model extends CI_Model {
 		$data =  $this->dv->get()->result();
 		if($data){
 			foreach($data AS $k=>$item){
-				$data[$k]->name = ($item->name !='' )?$item->name:'viettracker-'.base64_encode($item->id);
+				$data[$k]->name = ($item->name !='' )?$item->name:'vehicle-'.base64_encode($item->id);
 			}
 		}
 		return $data;
 	}
 
-	public function getLastVehicle($uid){
+	public function getLastVehicle($uid=null){
+	    if( !$uid ){
+	        $uid = $this->session->userdata('uid');
+	    }
 		$devices = self::loadVehicles($uid);
 		if(!$devices || count($devices) <=0) return null;
 		else {
 			$item = $devices[0];
-			if(self::checkData($item->id))
+			if(self::checkDatabaseGPS($item->id))
 				return $item->id;
 			else return null;
 		}
 	}
 	public function getVehicle($id){
 		$motor = self::getInfo($id);
-		if(!$motor){
+
+		if(!is_object($motor) ){
+		    die('Vehicle model 161 vid='.$id);
 			return false;
 		}
+
 		if($motor->name == ''){
-			$motor->name = 'viettracker-'.base64_encode($motor->id);
+			$motor->name = 'vehicle-'.base64_encode($motor->id);
 		}
 		if($motor->imei == ''){
 			$motor->imei = md5($motor->id);
 		}
-		$motor->created = $this->mapgps->printDate($motor->created);
-		$motor->expiry = $this->mapgps->printDate($motor->expiry);
+
+		$motor->created_label = $this->mapgps->printDate($motor->created);
+		$motor->expiry_label = $this->mapgps->printDate($motor->expiry);
 		$user = $this->Account_Model->userInfo($motor->owner);
 
 		$motor->fullname = ($user)?$user->fullname:'';
+
 		return $motor;
 	}
 	public function updateVehicle($data){
@@ -185,9 +194,12 @@ class Vehicle_Model extends CI_Model {
 
 		if( $table === FALSE )
 			return null;
-		$vid = abs($vid);
+
+		$vid = $vid;
 
 		$vehicle = self::getVehicle($vid);
+
+
 		if($table=='car'){
 
 			if($vehicle->door){

@@ -34,7 +34,7 @@
 					<input type="button" class="icon_only item-tracking" title="Tracking" >
 					<input type="button" class="icon_only item-report" title="{lang txt='View Report'}" >
 					<input type="button" class="icon_only item-history" title="{lang txt='View History'}" >
-					<input type="hidden" name="imei" value="{mortorID id=$it->id}" >
+					<input type="hidden" name="textid" value="{mortorID id=$it->id}" >
 
 				</td>
 
@@ -46,7 +46,7 @@
 						{else}
 						<input type="button" class="icon_only item-turnon" title="{lang txt='Turn On Device'}" >
 						{/if}
-						<input type="hidden" name="<imei" value="{mortorID id=$it->id}" >
+						<input type="hidden" name="imei" value="{mortorID id=$it->id}" >
 					{/if}
 
 				</td>
@@ -55,7 +55,7 @@
 			</tbody>
 			<tfoot></tfoot>
 		</table>
-		<form action="{site_url uri='quan-ly/sua-thiet-bi'}" method="post" name="update-vehicle" >
+		<form action="{site_url uri='setting/vehicle_info'}" method="post" name="update-vehicle" >
 			<input type="hidden" name="imei" value="" >
 			{input_token}
 		</form>

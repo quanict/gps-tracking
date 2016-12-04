@@ -23,18 +23,28 @@ class Draw extends MX_Controller {
 	    $vid = ABS(mortorID($vstr,true));
 	    $data['node'] = $this->db->where('id',$id)->get("motor$vid")->row();
 	    $timestamp = strtotime($data['node']->TIMESERVER);
+
 	    if( $this->input->post('h') ){
 	        $data['node']->h = $this->input->post('h');
 	    } else {
 	        $data['node']->h = date('H',$timestamp);
 	    }
 
-	    $data['node']->i = date('i',$timestamp);
+	    if( $this->input->post('i') ){
+	        $data['node']->i = $this->input->post('i');
+	    } else {
+	        $data['node']->i = date('i',$timestamp);
+	    }
+
+
 	    $data['node']->s = date('s',$timestamp);
+	    if( $data['node']->s ==0 ){
+	        $data['node']->i++;
+	    }
 	    $data['node']->date = date('Y-m-d',$timestamp);
 
 	    $data['node_pre'] = $this->db->where('id <',$id)->order_by('id DESC')->limit(2)->get("motor$vid")->result();
-	    $data['node_next'] = $this->db->where('id >',$id)->order_by('id ASC')->limit(10)->get("motor$vid")->result();
+	    $data['node_next'] = $this->db->where('id >',$id)->order_by('id ASC')->limit(5)->get("motor$vid")->result();
         if( abs($data['node']->angle) <=0 AND count($data['node_pre']) > 0){
             $node_pre = $data['node_pre'][0];
             $data['node']->angle = angle($node_pre->latitude,$node_pre->longitude,$data['node']->latitude,$data['node']->longitude);
@@ -60,7 +70,9 @@ class Draw extends MX_Controller {
 	        $data['node']->h = date('H',$timestamp);
 	    }
 
-	    $data['node']->i = date('i',$timestamp);
+        $data['node']->i = date('i',$timestamp);
+
+
 	    $data['node']->s = date('s',$timestamp);
 	    $data['node']->date = date('Y-m-d',$timestamp);
 

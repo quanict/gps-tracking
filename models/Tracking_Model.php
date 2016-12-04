@@ -14,7 +14,7 @@ class Tracking_Model extends CI_Model {
 
 	    if( $table === FALSE )
 	        return null;
-	    $vid = abs($vid);
+	    $vid = ($vid);
 
 	    $vehicle = $this->Vehicle_Model->getVehicle($vid);
 	    $table_veicle = "motor".abs($vid);
@@ -40,8 +40,8 @@ class Tracking_Model extends CI_Model {
 	    $query = $this->$table->get();
 
 	    if( !is_object($query) ){
-            bug($this->$table->last_query());
-            die;
+//             bug($this->$table->last_query());
+//             die;
 	    }elseif( $query->num_rows() < 1 ){
 	        return $this->getLastNode_demo($vid,array('HOUR(TIMESERVER)'=>8));
 	    } else {

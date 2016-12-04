@@ -2,93 +2,72 @@
 class Account extends MX_Controller {
 	function Account(){
 		parent::__construct();
-
-		$this->load->module('layouts');
-//
-// 		$this->template->set_theme('apricot')
-// 		->set_layout('bootstrap');
-
 		$this->userSession = array(
 				'uid'=> 0,
 				'logged_in'=>false,
 		);
 		$this->load->model('Statistic_Model');
 	}
+
+	var $user_fields = array(
+	    'username'=>array('request'=>true,'disabled'=>true),
+	    'email'=>array('type'=>'email','request'=>true, 'disabled'=>true),
+	    'fullname'=>'',
+	    'gender'=>array('type'=>'gender'),
+	    'phone'=>'',
+// 	    'phone_2'=>'',
+// 	    'phone_3'=>'',
+// 	    'phone_4'=>'',
+	    'address'=>'',
+	    'register_date'=>array('type'=>'date','disabled'=>true),
+	);
+
 	public function index(){
-		$form['fields'] = self::userFields();
-		$userinfo = $this->Account_Model->userInfo($this->session->userdata('uid'));
-		foreach($form['fields'] AS $key=>$val){
-			if(isset($userinfo->$key)){
-				$form['fields']->$key->value = $userinfo->$key;
-			}
-			$form['fields']->$key->disabled = true;
-		}
-		$css = 'form fieldset > label {padding:0;}'
-		.'form fieldset > div.clearfix > span  {line-height: 15px;} '
-		.'form fieldset {padding: 0;} '
-		;
-		$this->template->add_css($css,'embed');
-		$this->template->write('content', self::menu());
-		$this->template->write_view('content', 'account/view',$form);
-		$this->template->render();
+        return $this->changeInfo();
 	}
 
 	public function changeInfo(){
-		$this->mapgps->checkLogin();
-		$fields = array(
-				'fullname'=>'',
-				'gender'=>array('type'=>'gender'),
-				'phone'=>'',
-				'phone_2'=>'',
-				'phone_3'=>'',
-				'phone_4'=>'',
-				'email'=>array('type'=>'email'),
-				'address'=>'',
-				'vehicle_id'=>array('disabled'=>true),
-				'vehicle_simcard'=>array('disabled'=>true)
-		);
-		$form['fields'] = (object)$this->form->bindFields($fields);
-		if($this->input->post()) {
-			foreach ($form['fields'] AS $key=>$value){
-				$form['fields']->$key->value = $this->input->post($key);
-			}
-			$updateData = $this->form->formValue($form['fields']);
-			$updateData['id']=$this->session->userdata('uid');
-			$this->Account_Model->updateInfo($updateData);
-			redirect('tai-khoan');
-		}
+	    $this->mapgps->checkLogin();
+		if( $this->input->post() ) {
+            $update = array();
+            foreach ($this->user_fields AS $key=>$v){
+                if( !isset($v['disabled']) OR $v['disabled']!=true ){
+                    $update[$key] = $this->input->post($key);
+                }
+            }
+            $update['id'] = $this->session->userdata('uid');
+            $this->Account_Model->updateInfo($update);
+            redirect('tai-khoan');
+        }
 
 		$userinfo = $this->Account_Model->userInfo($this->session->userdata('uid'));
-		foreach($form['fields'] AS $key=>$val){
+		foreach($this->user_fields AS $key=>$val){
 			if(isset($userinfo->$key)){
-				$form['fields']->$key->value = $userinfo->$key;
+				$this->user_fields[$key]['value'] = $userinfo->$key;
 			}
 		}
-		$form['buttons'] = array(
-				array('title'=>'Save Data', 'type'=>'submit'),
-				array('title'=>'Cancel', 'type'=>'cancel','attributes'=>' class="cancel ui-button" '),
-		);
-		$this->template->write('content', self::menu());
-		$this->template->write_view('content', 'account/form',$form);
-		$this->template->render();
+
+
+		$this->template->set_theme('viettracker')
+		->set_layout('vietracker');
+		$this->smarty->assign('show_tool', false);
+		$this->template->build('pages/form',array('fields'=>$this->user_fields));
 	}
 
 	public function changePassword(){
-	    $random = random_string('alpha',10);
-	    bug(md5("demo:".$random).':'.$random);
-	    die('aaa');
 
 		$this->mapgps->checkLogin();
-		$this->page_title[] = lang('Change Password');
-// 		echo hexdec('344A62');exit;
+// 		$this->page_title[] = lang('Change Password');
+
 		$fields = array(
 			'password_old'=>array('type'=>'password'),
-			'password'=>array('type'=>'password','title'=>lang('New Password')),
+			'password'=>array('type'=>'password','label'=>lang('New Password')),
 			'password_re'=>array('type'=>'password'),
 			//'capcha'=>array('type'=>'capcha'),
 		);
-		$form['fields'] = (object)$this->form->bindFields($fields);
+		$msg = NULL;
 		if($this->input->post()) {
+
 			//if($this->form->checkInputCapcha() != true){
 			//	$this->msg[]= array('type'=>'error','content'=>'Nhập <b>Mã Bảo Vệ</b> không đúng');
 			//} else {
@@ -99,52 +78,33 @@ class Account extends MX_Controller {
 				$userData = $this->Account_Model->getLogin($user);
 				if($userData){
 					if($this->input->post('password')=='' || $this->input->post('password_re')==''){
-						$this->msg[]= array('type'=>'error','content'=>'Bạn phải nhập vào mật khẩu hợp lệ');
+					    $msg = 'Must input password';
 					} else if($this->input->post('password') == $this->input->post('password_re')){
-						$updateData['id']=$this->session->userdata('uid');
-						$salt = $this->form->genRandomString(10);
+
+					    $updateData['id']=$this->session->userdata('uid');
+
+					    $salt = random_string('alpha',10);
 						$updateData['password']= md5($this->input->post('password').":".$salt).':'.$salt;
+
 						$this->Account_Model->updateInfo($updateData);
 						$this->session->unset_userdata($this->userSession);
-						redirect('dang-nhap', 'refresh');
-						// 					redirect('tai-khoan');
+						redirect('dang-xuat');
 					} else {
-						$this->msg[]= array('type'=>'error','content'=>'Mật khẩu nhập lại không giống Mật khẩu mới');
+					    $msg = 'Password not same';
 					}
 				} else {
-					$this->msg[]= array('type'=>'error','content'=>'Mật khẩu cũ nhập không đúng');
+					$msg = 'Incorrect current password';
 				}
 			//}
 		}
-		$form['buttons'] = array(
-				array('title'=>'Change Password', 'type'=>'submit'),
-				array('title'=>'Cancel', 'attributes'=>' class="cancel ui-button" ','type'=>'cancel'),
-		);
-		$this->template->write('content', self::menu());
-		$this->template->write_view('content', 'account/form',$form);
-		//$this->template->write('title', $this->lang->line('Change Password') );
-		$this->template->write('title', $this->mapgps->pageTitle() );
-		$this->template->render();
+
+		$this->template->set_theme('viettracker')
+		->set_layout('vietracker');
+		$this->smarty->assign('show_tool', false);
+		$this->smarty->assign('error', $msg);
+		$this->template->build('pages/form',array('fields'=>$fields));
 	}
 
-	protected function userFields(){
-		$fields = array(
-				'username'=>array('request'=>true),
-				'email'=>array('type'=>'email','request'=>true),
-				'fullname'=>'',
-				'gender'=>array('type'=>'gender'),
-				'phone'=>'',
-				'phone_2'=>'',
-				'phone_3'=>'',
-				'phone_4'=>'',
-				'address'=>'',
-				'register_date'=>'',
-// 				'expiry'=>'',
-// 				'vehicle_id'=>'',
-// 				'vehicle_simcard'=>''
-		);
-		return (object)$this->form->bindFields($fields);
-	}
 
 	public function login(){
 		if ($this->session->userdata('uid')){
@@ -211,37 +171,7 @@ class Account extends MX_Controller {
 	/*
 	 * manager vehicle
 	*/
-	public function manager(){
-// 		$this->template->write('content', self::menu());
 
-		$subPage = $this->uri->segment(2);
-		if($this->input->post()) {
-			switch ($this->uri->segment(2)){
-				case 'sua-thiet-bi':
-					self::updateMotor();
-					break;
-				case 'mo-thiet-bi':
-				case 'tat-thiet-bi':
-					break;
-				default: show_404(); break;
-			}
-		}
-// 		if( $subPage == 'sua-thiet-bi' && $this->input->post()){
-// 			self::updateMotor();
-// 		} else if ( $subPage == 'tat-thiet-bi' && $this->input->post() ){
-// 			self::shutdownVehicle();
-// 		}
-		else {
-			$data['vehicles'] = $this->Vehicle_Model->getTracks($this->session->userdata('uid'));
-// 			$this->template->write_view('content', 'account/vehicles',$data);
-// 			$this->template->add_js_ready('manager.tableAction();');
-		}
-// 		$this->template->render();
-		$this->smarty->assign('show_tool', false);
-		$this->template->set_theme('viettracker')
-		->set_layout('vietracker')
-		->build('pages/vehicles',$data);;
-	}
 
 	protected function updateMotor(){
 		$this->page_title[] = 'Sửa Dữ Liệu Thiết Bị';
